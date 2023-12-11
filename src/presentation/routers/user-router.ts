@@ -11,8 +11,23 @@ const UserRouter = (db: NoSQLWrapper) => {
     router.post('/user', async(request, response) => {
         const user = request.body;
         const resultDb = await db.CreateUser(user);
-        response.status(HttpStateCodes.OK).json({response: resultDb});
-    })
+        if(resultDb == 'USER_EXISTS') response.status(HttpStateCodes.FORBIDDEN).json({response:'USER EXISTS'})
+        else response.status(HttpStateCodes.CREATED).json({response: resultDb});
+    });
+    router.post('/login', async(request, response)=>{
+        const user = request.body;
+        const resultDb = await db.Login(user);
+        if(resultDb == 'NOT_FOUND')
+        {
+            response.status(HttpStateCodes.NOT_FOUND).json({response:'USER NOT FOUND'});
+            return;
+        }
+        if(resultDb == 'PASSWORD_ICORRECT'){
+            response.status(HttpStateCodes.UNAUTHORIZED).json({response:'PASSWORD ICORRECT'})
+            return;
+        }
+        response.status(HttpStateCodes.OK).json({response:resultDb})
+    });
     return router;
 }
 export default UserRouter;

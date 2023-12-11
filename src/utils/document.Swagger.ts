@@ -6,7 +6,7 @@ const swaggerOptions = {
         description: 'The Api is for login user',
       },
     },
-    apis: ['./src/routes/*.ts'], // Ajusta la ruta según tu estructura de archivos
+    apis: ['./src/resentation/routes/*.ts'], // Ajusta la ruta según tu estructura de archivos
   };    
   
   module.exports = swaggerOptions;
