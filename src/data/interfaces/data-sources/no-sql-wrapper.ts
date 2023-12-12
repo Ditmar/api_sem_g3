@@ -1,4 +1,4 @@
-import User from "../../../domain/models/User";
+import User from '../../../domain/models/User';
 
 interface NoSQLWrapper {
     CreateUser: (user: User) => Promise<any>;

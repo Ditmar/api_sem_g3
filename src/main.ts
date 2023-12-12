@@ -5,8 +5,9 @@ import NoSQLWrapper from './data/interfaces/data-sources/no-sql-wrapper';
 import { Response } from 'express';
 import 'dotenv/config'
 import jwt from 'jsonwebtoken';
-import { compare, hash } from "bcryptjs";
+import { compare, hash } from 'bcryptjs';
 import User from './domain/models/User';
+import { AUTH, USER } from './utils/message';
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
@@ -26,7 +27,7 @@ const getMongoDBClient = async (): Promise<NoSQLWrapper> => {
     const CreateUser = async (user: User): Promise<any> => {
         const {id,name,email,password}=user;
         const findUser = await FindOneUser(id)
-        if(findUser)return 'USER_EXISTS';
+        if(findUser)return USER.EXISTS;
         const criptoPassword=await hash(password,8)
         const result = await db.collection('users').insertOne({id,name,email,criptoPassword});
         console.log(`New user created with the following id: ${result.insertedId}`);
@@ -49,9 +50,9 @@ const getMongoDBClient = async (): Promise<NoSQLWrapper> => {
     }
     const Login =async ({email,password}:User) => {
         const user = await FindOneUser(email)
-        if(!user)return 'NOT_FOUND'
+        if(!user)return USER.NOT_FOUND
         const checkPassword = await compare(password,user.password)
-        if(!checkPassword)return 'PASSWORD_ICORRECT'
+        if(!checkPassword)return AUTH.PASSWORD_INCORRECT
         return {
             user:user,
             token: generateToken(user)
