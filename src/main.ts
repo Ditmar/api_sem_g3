@@ -34,7 +34,6 @@ const getMongoDBClient = async (): Promise<NoSQLWrapper> => {
     // No console.log statement here
     // Handle success message or further logic if needed
 }
-
         const userToken = {
             data:result.insertedId,
             token:generateToken(user)
@@ -64,14 +63,20 @@ const getMongoDBClient = async (): Promise<NoSQLWrapper> => {
     }
     const generateToken =async (user:User) => {
         return jwt.sign(user,SECRET,{expiresIn:'1h'})
-    }
-    return {
-        CreateUser,
-        FindAllUsers,
-        Login,
-    }
+    // Your logic for generating the token
+    // ...
+    // Return the generated token
 }
 
+// Somewhere in your code
+const someFunction = async () => {
+    // ...
+    const token = generateToken(user);
+    return {
+        token: token
+    }
+}
+    
 // const getPgDBClient = () => {
 
 // }
