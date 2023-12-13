@@ -30,7 +30,6 @@ const getMongoDBClient = async (): Promise<NoSQLWrapper> => {
         if(findUser)return USER.EXISTS;
         const criptoPassword=await hash(password,8)
         const result = await db.collection('users').insertOne({id,name,email,criptoPassword});
-        console.log(`New user created with the following id: ${result.insertedId}`);
         const userToken = {
             data:result.insertedId,
             token:generateToken(user)
